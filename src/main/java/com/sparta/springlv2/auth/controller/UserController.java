@@ -71,12 +71,16 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public ResultResponseDto login(@RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
+    public ResponseEntity<Message> login(@Valid @RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
 
         String token = userService.login(requestDto);
         res.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
-        return new ResultResponseDto("로그인 성공");
+        Message message = new Message();
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("로그인 성공");
+
+        return ResponseEntity.ok(message);
     }
 
 
