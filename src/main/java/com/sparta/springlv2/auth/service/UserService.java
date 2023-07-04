@@ -31,6 +31,8 @@ public class UserService {
     public void signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
+        System.out.println("확인: "+username);
+        System.out.println("확인: "+password);
 
         // 회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUsername(username);

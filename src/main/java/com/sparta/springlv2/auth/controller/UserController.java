@@ -43,7 +43,7 @@ public class UserController {
 
     @PostMapping("/user/signup")
     @ResponseBody
-    public ResponseEntity<Message> signup(@Valid @RequestBody SignupRequestDto requestDto,
+    public ResponseEntity<Message> signup(@Valid @RequestBody SignupRequestDto requestDto,//json,으로 와서,postman 으로 해야되는상황
                                           BindingResult bindingResult,
                                           HttpServletResponse res){
         Message message = new Message();
@@ -61,6 +61,7 @@ public class UserController {
             message.setMessage("회원가입 실패");
             return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
         }
+        System.out.println("확인: "+ requestDto.getUsername() + requestDto.getPassword());
         userService.signup(requestDto);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
