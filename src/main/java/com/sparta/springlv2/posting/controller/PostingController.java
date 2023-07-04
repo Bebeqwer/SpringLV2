@@ -1,8 +1,10 @@
 package com.sparta.springlv2.posting.controller;
 
+import com.sparta.springlv2.posting.dto.Message;
 import com.sparta.springlv2.posting.dto.PostingRequestDto;
 import com.sparta.springlv2.posting.dto.PostingResponseDto;
 import com.sparta.springlv2.posting.service.PostingService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,7 +45,8 @@ public class PostingController {
 
 
     @DeleteMapping("/postings/{id}")
-    public boolean deleteMemo(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
+    public Long deleteMemo(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
+
 
         return postingService.deletePosting(id, requestDto);
 
