@@ -3,7 +3,10 @@ package com.sparta.springlv2.posting.controller;
 import com.sparta.springlv2.posting.dto.Message;
 import com.sparta.springlv2.posting.dto.PostingRequestDto;
 import com.sparta.springlv2.posting.dto.PostingResponseDto;
+import com.sparta.springlv2.posting.dto.StatusEnum;
 import com.sparta.springlv2.posting.service.PostingService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,10 +48,16 @@ public class PostingController {
 
 
     @DeleteMapping("/postings/{id}")
-    public Long deleteMemo(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
+    public ResponseEntity<Message> deleteMemo(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
+            Long ll = postingService.deletePosting(id,requestDto);
+            Message message = new Message();
+            HttpHeaders headers= new HttpHeaders();
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ll + "게시글 삭제완료");
+            message.setData(ll);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
 
 
-        return postingService.deletePosting(id, requestDto);
 
         // 해당 메모가 DB에 존재하는지 확인
 

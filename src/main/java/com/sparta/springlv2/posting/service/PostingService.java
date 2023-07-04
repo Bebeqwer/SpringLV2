@@ -69,7 +69,7 @@ public class PostingService {
 
 
         Posting posting = findPosting(id);
-        if (posting.getPassword().equals(requestDto.getPassword())) {
+        if (info.getSubject().equals(requestDto.getUsername())) {
             posting.update(requestDto);
 
             return new PostingResponseDto(posting);
@@ -86,7 +86,7 @@ public class PostingService {
         Posting posting = findPosting(id);
 
 
-        if (posting.getPassword().equals(requestDto.getPassword())) {
+        if (info.getSubject().equals(requestDto.getUsername())) {
             postingRepository.delete(posting);
 
 
