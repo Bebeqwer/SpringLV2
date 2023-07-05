@@ -76,9 +76,9 @@ public class UserController {
         String token = userService.login(requestDto);
 
         HttpHeaders headers = new HttpHeaders();
-// headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+    // headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-// res.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+    // res.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
         Message message = new Message();
         message.setStatus(StatusEnum.OK);
