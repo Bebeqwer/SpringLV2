@@ -1,6 +1,9 @@
 package com.sparta.springlv2.auth.controller;
 
+import com.sparta.springlv2.auth.dto.LoginRequestDto;
+import com.sparta.springlv2.auth.dto.ResultResponseDto;
 import com.sparta.springlv2.auth.dto.SignupRequestDto;
+import com.sparta.springlv2.auth.jwt.JwtUtil;
 import com.sparta.springlv2.auth.service.UserService;
 import com.sparta.springlv2.posting.dto.Message;
 import com.sparta.springlv2.posting.dto.StatusEnum;
@@ -21,7 +24,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/api")
 public class UserController {
     private UserService userService;
@@ -43,17 +46,17 @@ public class UserController {
 
     @PostMapping("/user/signup")
     @ResponseBody
-    public ResponseEntity<Message> signup(@Valid @RequestBody SignupRequestDto requestDto,
+    public ResponseEntity<Message> signup(@Valid @RequestBody SignupRequestDto requestDto,//json,으로 와서,postman 으로 해야되는상황
                                           BindingResult bindingResult,
-                                          HttpServletResponse res){
+                                          HttpServletResponse res) {
         Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         message.setStatus(StatusEnum.OK);
         message.setMessage("회원가입 성공");
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if(fieldErrors.size() > 0) {
+        if (fieldErrors.size() > 0) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
@@ -61,8 +64,28 @@ public class UserController {
             message.setMessage("회원가입 실패");
             return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
         }
+        System.out.println("확인: " + requestDto.getUsername() + requestDto.getPassword());
         userService.signup(requestDto);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<Message> login(@Valid @RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
+
+        String token = userService.login(requestDto);
+
+        HttpHeaders headers = new HttpHeaders();
+    // headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+    // res.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+
+        Message message = new Message();
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("로그인 성공");
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+
 }
