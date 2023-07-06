@@ -71,6 +71,7 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
+    @ResponseBody
     public ResponseEntity<Message> login(@Valid @RequestBody LoginRequestDto requestDto, HttpServletResponse res) {
 
         String token = userService.login(requestDto);
@@ -83,6 +84,7 @@ public class UserController {
         Message message = new Message();
         message.setStatus(StatusEnum.OK);
         message.setMessage("로그인 성공");
+        message.setData("aafdasdf");
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
